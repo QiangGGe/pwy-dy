@@ -6,7 +6,9 @@ const { init: initDB, Counter } = require("./db");
 const logger = morgan("tiny");
 const axios = require('axios');
 const cloud = require('wx-server-sdk');
-const ENV = 'yq-release-5gaejr2bafeb56eb';
+cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
+
+const ENV = 'cloud1-1g3wxe9622a292bb';
 
 const app = express();
 app.use(express.urlencoded({ extended: false }));
@@ -17,19 +19,32 @@ app.use(logger);
 // 首页
 app.get("/", async (req, res) => {
 
-  let URL = `https://api.weixin.qq.com/tcb/invokecloudfunction?env=${ENV}&name=getBanner`;
-  console.log('=======URL====>',URL);
-  try {
-    const response = await axios.post(URL);
+  cloud.callFunction({name:'jobMgr',data:{data:{method:'list',params:{page:1}}},
+  success:(result=>{
+    console.log('调用成功==》',result);
     res.send({
       code: 0,
-      data: {title:'hellow yangqin',data:response.data},
+      data: {title:'hellow pwy',data:result},
     });
+  }),
+  fail:(err=>{
+    console.log('调用失败：===》',err)
+  })
+})
+
+  // let URL = `https://api.weixin.qq.com/tcb/invokecloudfunction?env=${ENV}&name=jobMgr`;
+  // console.log('=======URL====>',URL);
+  // try {
+  //   const response = await axios.post(URL);
+  //   res.send({
+  //     code: 0,
+  //     data: {title:'hellow yangqin',data:response.data},
+  //   });
   
-    console.log('=====response====>',response);
-  } catch (error) {
-    console.log('======error==>',error);
-  }
+  //   console.log('=====response====>',response);
+  // } catch (error) {
+  //   console.log('======error==>',error);
+  // }
  
 });
 /**
