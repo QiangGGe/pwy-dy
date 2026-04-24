@@ -18,34 +18,34 @@ app.use(logger);
 // 首页
 app.get("/", async (req, res) => {
 
-//   cloud.callFunction({name:'jobMgr',data:{data:{method:'list',params:{page:1}}},
-//   success:(result=>{
-//     console.log('调用成功==》',result);
-//     res.send({
-//       code: 0,
-//       data: {title:'hellow pwy',data:result},
-//     });
-//   }),
-//   fail:(err=>{
-//     console.log('调用失败：===》',err)
-//   })
-// })
-
-  let URL = `https://api.weixin.qq.com/tcb/invokecloudfunction?env=${ENV}&name=jobMgr`;
-  console.log('=======URL====>',URL);
-  try {
-    const response = await axios.post(URL,{data:{data:{method:'list',params:{page:1}}}});
+  cloud.callFunction({name:'jobMgr',data:{data:{method:'list',params:{page:1}}},
+  success:(result=>{
+    console.log('调用成功==》',result);
     res.send({
       code: 0,
-      data: {title:'hellow yangqin',data:response.data},
+      data: {title:'hellow pwy',data:result},
     });
+  }),
+  fail:(err=>{
+    console.log('调用失败：===》',err)
+  })
+})
+
+//   let URL = `https://api.weixin.qq.com/tcb/invokecloudfunction?env=${ENV}&name=jobMgr`;
+//   console.log('=======URL====>',URL);
+//   try {
+//     const response = await axios.post(URL,{data:{data:{method:'list',params:{page:1}}}});
+//     res.send({
+//       code: 0,
+//       data: {title:'hellow yangqin',data:response.data},
+//     });
   
-    console.log('=====response====>',response);
-  } catch (error) {
-    console.log('======error==>',error);
-  }
+//     console.log('=====response====>',response);
+//   } catch (error) {
+//     console.log('======error==>',error);
+//   }
  
-});
+// });
 /**
  * 通通锁的回调地址
  * 因为通通锁只能一次性配置，但是微信的开放接口invokecloudfunction又需要token，而token时效只有2小时，所以只能通过云托管来免token请求
